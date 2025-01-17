@@ -28,4 +28,38 @@ body {
     align-items: center;
     justify-content: center;
     margin-top: 30px;
+    padding: 0px 4px;
+	position: relative;
+
+}
+
+.searchBar input {
+    display: flex;
+    align-items: center;
+    width: 536px;
+    height: 40px;
+	background-color: #FFFFFF;
+	border-bottom: 0.8px solid #C6C6C6;
+	border-left: 0.8px solid #C6C6C6;
+	border-radius: 40px 0px 0px 40px;
+	border-top: 0.8px solid #C6C6C6;
+	box-shadow: #EEEEEE 0px 1px 2px 0px inset;
+	cursor: text;
+	margin: 0px 0px 0px 32px;
+	padding: 0px 4px 0px 16px;
+	position: relative;
+}
+
+.searchBar button {
+    align-items: flex-start;
+    justify-content: center;
+	appearance: auto;
+    width: 53.6px;
+    height: 41px;
+	background-color: #F0F0F0;
+	border: 0.8px solid #C6C6C6;
+	border-radius: 0px 40px 40px 0px;
+	box-sizing: border-box;
+	cursor: pointer;
+
 }
