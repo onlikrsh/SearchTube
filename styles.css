@@ -1,0 +1,21 @@
+body {
+    margin: 0px;
+}
+
+.title {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.discription {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.searchBar{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
