@@ -6,6 +6,7 @@
 body {
     margin: 0px;
     font-family: Arial, Helvetica, sans-serif;
+    box-sizing: border-box;
 }
 
 .title {
@@ -33,7 +34,7 @@ input {
     margin-top: 30px;
     padding: 0px 4px;
 	position: relative;
-
+    overflow: hidden;
 }
 
 .searchBar input {
@@ -72,8 +73,32 @@ input {
 	border-radius: 0px 40px 40px 0px;
 	box-sizing: border-box;
 	cursor: pointer;
+    transition: background-color 0.2s ease;
 }
 
 .searchBar button:hover {
     background-color: #F0F0F0;
+}
+
+.searchBar #searchClear {
+    display: none;
+    border: none;
+    background: transparent;
+    font-size: 15px;
+    cursor: pointer;
+    color: #888;
+    position: absolute;
+    transform: translate(150px);
+    height: 40px;
+    width: 40px;
+}
+
+.searchBar #searchClear:hover {
+    background-color: #e5e5e5;
+    border-radius: 50%;
+    border-left: none;
+}
+
+.searchBar :not(:placeholder-shown) + #searchClear {
+    display: block;
 }
