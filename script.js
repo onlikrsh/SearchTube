@@ -52,11 +52,11 @@ function displayResults(items) {
         const { snippet, id } = item;
 
         let url = '#';
-        if (items.kind === 'youtube#video') {
+        if (id.videoId) {
             url = `https://www.youtube.com/watch?v=${item.id.videoId}`;
-        } else if (item.kind === 'youtube#playlist') {
+        } else if (id.playlistId) {
             url = `https://www.youtube.com/playlist?list=${item.id.playlistId}`;
-        } else if (items.kind === 'youtube#channel') {
+        } else if (id.channelId) {
             url = `https://www.youtube.com/channel/${item.id.channelId}`;
         }
 
@@ -65,7 +65,9 @@ function displayResults(items) {
 
         resultElement.innerHTML = `
         <div class="thumbnail">
-            <img src="${snippet.thumbnails.medium.url}" alt="${snippet.title}">
+           <a href="${url}" target="_blank">
+                <img src="${snippet.thumbnails.medium.url}" alt="${snippet.title}">
+            </a>
         </div>
         <div class="info">
             <h3><a href="${url}" target="_blank">${snippet.title}</a></h3>
