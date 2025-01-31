@@ -65,12 +65,12 @@ function displayResults(items) {
 
         resultElement.innerHTML = `
         <div class="thumbnail">
-           <a href="${url}" target="_blank">
-                <img src="${snippet.thumbnails.medium.url}" alt="${snippet.title}">
+           <a href="${url}" target="_blank" rel="noopener noreferrer">
+                <img src="${snippet.thumbnails.medium.url} alt="${snippet.title}">
             </a>
         </div>
         <div class="info">
-            <h3><a href="${url}" target="_blank">${snippet.title}</a></h3>
+            <h3><a href="${url}" target="_blank" rel="noopener noreferrer">${snippet.title}</a></h3>
             <p>${snippet.description}</p>
         </div>
         `;
