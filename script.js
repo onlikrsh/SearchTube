@@ -1,4 +1,4 @@
-const API_KEY = 'AIzaSyCnbDjBtKJZgB3_xDFa9RKawCjjQMmAejA';
+const API_KEY = config.api_key
 
 
 const searchBtn = document.getElementById('searchButton');
@@ -66,7 +66,7 @@ function displayResults(items) {
         resultElement.innerHTML = `
         <div class="thumbnail">
            <a href="${url}" target="_blank" rel="noopener noreferrer">
-                    <img src="${snippet.thumbnails.medium.url}" alt="${snippet.title}">
+                <img src="${snippet.thumbnails.medium.url}" alt="${snippet.title}">
             </a>
         </div>
         <div class="info">
