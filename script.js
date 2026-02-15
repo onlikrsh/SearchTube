@@ -281,6 +281,7 @@ function toggleDesc() {
 }
 
 function closePlayer() {
+    playerSection.innerHTML = '';
     setView('results');
     requestAnimationFrame(() => window.scrollTo(0, state.scrollY));
 }
