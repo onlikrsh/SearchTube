@@ -16,6 +16,7 @@ const resultsContainer = document.getElementById('resultsContainer');
 const loadMoreBtn = document.getElementById('loadMoreBtn');
 const sortSelect = document.getElementById('sortSelect');
 const playerSection = document.getElementById('playerSection');
+const homeBtn = document.getElementById('homeBtn');
 const chips = document.querySelectorAll('.filter-chip');
 
 // --- Utilities ---
@@ -287,6 +288,18 @@ function closePlayer() {
 }
 
 // --- Event Listeners ---
+
+homeBtn.addEventListener('click', () => {
+    playerSection.innerHTML = '';
+    resultsContainer.innerHTML = '';
+    loadMoreBtn.hidden = true;
+    searchInput.value = '';
+    clearBtn.classList.remove('visible');
+    state.query = '';
+    state.pageToken = null;
+    setView('home');
+    window.scrollTo(0, 0);
+});
 
 searchInput.addEventListener('input', () => {
     clearBtn.classList.toggle('visible', searchInput.value.length > 0);
