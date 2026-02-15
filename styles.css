@@ -589,6 +589,19 @@ main { display: none; }
     transition: max-height 0.4s var(--ease);
 }
 
+.desc-text a {
+    color: #3ea6ff;
+    text-decoration: none;
+    transition: opacity 0.2s var(--ease);
+}
+
+.desc-text a:hover { opacity: 0.8; }
+
+.desc-text a.timestamp {
+    color: #3ea6ff;
+    font-weight: 500;
+}
+
 .desc-text.expanded { max-height: 5000px; }
 
 .show-more-btn {

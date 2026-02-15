@@ -27,6 +27,40 @@ function esc(str) {
     return d.innerHTML;
 }
 
+function linkify(text) {
+    let safe = esc(text);
+
+    // URLs → clickable links
+    safe = safe.replace(
+        /(https?:\/\/[^\s<]+)/g,
+        url => {
+            const href = url.replace(/&amp;/g, '&');
+            return `<a href="${href}" target="_blank" rel="noopener noreferrer">${url}</a>`;
+        }
+    );
+
+    // Timestamps (1:23, 12:34, 1:23:45) → clickable seek links
+    safe = safe.replace(
+        /(^|\s)(\d{1,2}:\d{2}(?::\d{2})?)(?=[\s,.);\n]|$)/gm,
+        (match, prefix, ts) => {
+            const parts = ts.split(':').map(Number);
+            const s = parts.length === 3 ? parts[0] * 3600 + parts[1] * 60 + parts[2] : parts[0] * 60 + parts[1];
+            return `${prefix}<a href="#" class="timestamp" onclick="seekTo(${s});return false">${ts}</a>`;
+        }
+    );
+
+    return safe;
+}
+
+function seekTo(seconds) {
+    const iframe = document.querySelector('.player-wrap iframe');
+    if (!iframe) return;
+    const match = iframe.src.match(/embed\/([^?]+)/);
+    if (match) {
+        iframe.src = `https://www.youtube.com/embed/${match[1]}?autoplay=1&rel=0&start=${seconds}`;
+    }
+}
+
 function formatViews(n) {
     n = parseInt(n);
     if (n >= 1e9) return (n / 1e9).toFixed(1) + 'B';
@@ -247,7 +281,7 @@ function openPlayer(videoId) {
 
 function renderPlayer(videoId, video) {
     const { snippet, statistics } = video;
-    const desc = esc(snippet.description);
+    const desc = linkify(snippet.description);
     const needsToggle = snippet.description.length > 200;
 
     playerSection.innerHTML = `
