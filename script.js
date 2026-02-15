@@ -1,6 +1,28 @@
 const API_KEY = config.api_key;
 const API = 'https://www.googleapis.com/youtube/v3';
 
+// --- Theme ---
+
+function initTheme() {
+    const saved = localStorage.getItem('theme');
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    const theme = saved || (prefersDark ? 'dark' : 'light');
+    applyTheme(theme);
+}
+
+function applyTheme(theme) {
+    document.body.dataset.theme = theme;
+    localStorage.setItem('theme', theme);
+    const meta = document.querySelector('meta[name="theme-color"]');
+    if (meta) meta.content = theme === 'dark' ? '#0f0f0f' : '#ffffff';
+}
+
+function toggleTheme() {
+    applyTheme(document.body.dataset.theme === 'dark' ? 'light' : 'dark');
+}
+
+initTheme();
+
 const state = {
     query: '',
     filter: '',
@@ -17,6 +39,7 @@ const loadMoreBtn = document.getElementById('loadMoreBtn');
 const sortSelect = document.getElementById('sortSelect');
 const playerSection = document.getElementById('playerSection');
 const homeBtn = document.getElementById('homeBtn');
+const themeToggle = document.getElementById('themeToggle');
 const chips = document.querySelectorAll('.filter-chip');
 
 // --- Utilities ---
@@ -366,3 +389,5 @@ sortSelect.addEventListener('change', () => {
     state.sort = sortSelect.value;
     if (state.query) search();
 });
+
+themeToggle.addEventListener('click', toggleTheme);
