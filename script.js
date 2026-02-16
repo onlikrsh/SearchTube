@@ -106,6 +106,7 @@ function timeAgo(dateStr) {
 }
 
 function setView(view) {
+    if (view !== 'player') playerSection.innerHTML = '';
     document.body.dataset.view = view;
 }
 
@@ -339,7 +340,6 @@ function toggleDesc() {
 }
 
 function closePlayer() {
-    playerSection.innerHTML = '';
     setView('results');
     requestAnimationFrame(() => window.scrollTo(0, state.scrollY));
 }
@@ -347,7 +347,6 @@ function closePlayer() {
 // --- Event Listeners ---
 
 homeBtn.addEventListener('click', () => {
-    playerSection.innerHTML = '';
     resultsContainer.innerHTML = '';
     loadMoreBtn.hidden = true;
     searchInput.value = '';
