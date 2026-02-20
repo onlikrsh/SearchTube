@@ -1,4 +1,4 @@
-const API_KEY = config.api_key;
+const CLIENT_ID = config.client_id;
 const API = 'https://www.googleapis.com/youtube/v3';
 
 // --- Theme ---
@@ -28,7 +28,8 @@ const state = {
     filter: '',
     sort: 'relevance',
     pageToken: null,
-    scrollY: 0
+    scrollY: 0,
+    token: null
 };
 
 const searchInput = document.getElementById('searchInput');
@@ -41,6 +42,27 @@ const playerSection = document.getElementById('playerSection');
 const homeBtn = document.getElementById('homeBtn');
 const themeToggle = document.getElementById('themeToggle');
 const chips = document.querySelectorAll('.filter-chip');
+const signInBtn = document.getElementById('signInBtn');
+const signOutBtn = document.getElementById('signOutBtn');
+
+// --- Auth ---
+
+let tokenClient;
+
+function initAuth() {
+    tokenClient = google.accounts.oauth2.initTokenClient({
+        client_id: CLIENT_ID,
+        scope: 'https://www.googleapis.com/auth/youtube.readonly',
+        callback: (tokenResponse) => {
+            if (tokenResponse && tokenResponse.access_token) {
+                state.token = tokenResponse.access_token;
+                signInBtn.hidden = true;
+                signOutBtn.hidden = false;
+                if (state.query) search();
+            }
+        },
+    });
+}
 
 // --- Utilities ---
 
@@ -128,6 +150,10 @@ function showSkeletons(count = 6) {
 // --- Search ---
 
 function search(append = false) {
+    if (!state.token) {
+        showError({ message: 'auth' });
+        return;
+    }
     const query = searchInput.value.trim();
     if (!query) return;
 
@@ -145,10 +171,12 @@ function search(append = false) {
     setView('results');
 
     const type = state.filter || 'video,playlist,channel';
-    let url = `${API}/search?part=snippet&q=${encodeURIComponent(query)}&type=${type}&order=${state.sort}&maxResults=12&key=${API_KEY}`;
+    let url = `${API}/search?part=snippet&q=${encodeURIComponent(query)}&type=${type}&order=${state.sort}&maxResults=12`;
     if (append && state.pageToken) url += `&pageToken=${state.pageToken}`;
 
-    fetch(url)
+    fetch(url, {
+        headers: { Authorization: `Bearer ${state.token}` }
+    })
         .then(r => {
             if (r.status === 403) throw new Error('rate');
             if (!r.ok) throw new Error('api');
@@ -170,7 +198,9 @@ function search(append = false) {
 }
 
 function fetchStats(ids) {
-    return fetch(`${API}/videos?part=statistics,snippet&id=${ids.join(',')}&key=${API_KEY}`)
+    return fetch(`${API}/videos?part=statistics,snippet&id=${ids.join(',')}`, {
+        headers: { Authorization: `Bearer ${state.token}` }
+    })
         .then(r => r.json())
         .then(data => {
             const map = {};
@@ -255,7 +285,8 @@ function showEmpty() {
 function showError(err) {
     const msgs = {
         rate: 'Too many requests. Please wait a moment.',
-        api: 'Something went wrong. Please try again.'
+        api: 'Something went wrong. Please try again.',
+        auth: 'Please sign in with Google to search.'
     };
 
     resultsContainer.innerHTML = `
@@ -284,7 +315,9 @@ function openPlayer(videoId) {
         </div>
     `;
 
-    fetch(`${API}/videos?part=snippet,statistics&id=${videoId}&key=${API_KEY}`)
+    fetch(`${API}/videos?part=snippet,statistics&id=${videoId}`, {
+        headers: { Authorization: `Bearer ${state.token}` }
+    })
         .then(r => {
             if (!r.ok) throw new Error('api');
             return r.json();
@@ -390,3 +423,23 @@ sortSelect.addEventListener('change', () => {
 });
 
 themeToggle.addEventListener('click', toggleTheme);
+
+signInBtn.addEventListener('click', () => {
+    if (tokenClient) tokenClient.requestAccessToken();
+});
+
+signOutBtn.addEventListener('click', () => {
+    if (state.token) {
+        google.accounts.oauth2.revoke(state.token, () => {
+            state.token = null;
+            signInBtn.hidden = false;
+            signOutBtn.hidden = true;
+            resultsContainer.innerHTML = '';
+            state.query = '';
+            state.pageToken = null;
+            searchInput.value = '';
+            clearBtn.classList.remove('visible');
+            setView('home');
+        });
+    }
+});
