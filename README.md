@@ -21,7 +21,9 @@ Vanilla HTML, CSS, JavaScript.
 
 1. Get a [YouTube Data API v3 key](https://console.cloud.google.com/).
 2. Create `config.js` in the project root:
+
    ```js
    const config = { api_key: "YOUR_YOUTUBE_DATA_API_V3_KEY" };
    ```
+
 3. Open `index.html` in your browser.
