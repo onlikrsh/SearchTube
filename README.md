@@ -1,29 +1,27 @@
-# SearchTube
+# 🔍 SearchTube
 
-A distraction-free YouTube search experience. No recommendations, no sidebar — just search, watch, and go.
+A distraction-free YouTube search experience. No recommendations, no sidebar — just search and watch.
 
-## Features
+## ✨ Features
 
 - Search videos, playlists, and channels
 - Filter by type, sort by relevance/date/views/rating
 - In-app video player with no distractions
-- Load more pagination
-- Responsive dark theme
+- Responsive dark/light theme
+- **Zero Login Required:** Publicly accessible search via YouTube Data API.
 
-## Tech
+## 🛠 Tech Stack
 
-Vanilla HTML, CSS, and JavaScript. No frameworks, no build tools.
+Vanilla HTML, CSS, JavaScript.
 
-## Setup
+- No front-end frameworks
+- 1 Vercel Serverless Function (`api/env.js`) for secure API Key injection
 
-1. Create `config.js` in the project root:
+## 💻 Local Development
+
+1. Get a [YouTube Data API v3 key](https://console.cloud.google.com/).
+2. Create `config.js` in the project root:
    ```js
-   const config = { api_key: 'YOUR_YOUTUBE_DATA_API_V3_KEY' };
+   const config = { api_key: "YOUR_YOUTUBE_DATA_API_V3_KEY" };
    ```
-2. Open `index.html` in your browser.
-
-
-
-## 🔑 API Key
-
-Get a YouTube Data API v3 key from the [Google Cloud Console](https://console.cloud.google.com/).
+3. Open `index.html` in your browser.
