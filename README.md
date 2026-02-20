@@ -1,4 +1,4 @@
-# 🔍 SearchTube
+# 🔍 [SearchTube](https://search-tube-cyan.vercel.app/)
 
 A distraction-free YouTube search experience. No recommendations, no sidebar — just search and watch.
 
