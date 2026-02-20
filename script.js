@@ -1,4 +1,16 @@
-const CLIENT_ID = config.client_id;
+let CLIENT_ID = '';
+if (typeof VERCEL_CLIENT_ID !== 'undefined') {
+    CLIENT_ID = VERCEL_CLIENT_ID;
+}
+
+try {
+    if (typeof config !== 'undefined' && config.client_id) {
+        CLIENT_ID = config.client_id;
+    }
+} catch (e) {
+    // Config not found or invalid
+}
+
 const API = 'https://www.googleapis.com/youtube/v3';
 
 // --- Theme ---
@@ -50,6 +62,13 @@ const signOutBtn = document.getElementById('signOutBtn');
 let tokenClient;
 
 function initAuth() {
+    if (!CLIENT_ID) {
+        console.warn('Google Client ID is missing. Authentication disabled.');
+        signInBtn.disabled = true;
+        signInBtn.title = "Client ID missing in configuration.";
+        return;
+    }
+    
     tokenClient = google.accounts.oauth2.initTokenClient({
         client_id: CLIENT_ID,
         scope: 'https://www.googleapis.com/auth/youtube.readonly',
