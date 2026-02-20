@@ -1,7 +1,4 @@
 let CLIENT_ID = '';
-if (typeof VERCEL_CLIENT_ID !== 'undefined') {
-    CLIENT_ID = VERCEL_CLIENT_ID;
-}
 
 try {
     if (typeof config !== 'undefined' && config.client_id) {
@@ -61,7 +58,20 @@ const signOutBtn = document.getElementById('signOutBtn');
 
 let tokenClient;
 
-function initAuth() {
+async function initAuth() {
+    // If local config is missing, try fetching from Vercel Serverless Function
+    if (!CLIENT_ID) {
+        try {
+            const res = await fetch('/api/env');
+            if (res.ok) {
+                const data = await res.json();
+                if (data.client_id) CLIENT_ID = data.client_id;
+            }
+        } catch (e) {
+            console.warn('Could not fetch CLIENT_ID from Vercel env:', e);
+        }
+    }
+
     if (!CLIENT_ID) {
         console.warn('Google Client ID is missing. Authentication disabled.');
         signInBtn.disabled = true;
